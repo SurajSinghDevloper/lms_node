@@ -1,0 +1,39 @@
+const mongoose = require('mongoose');
+const Gender = require('../../../constants/Gender');
+const Status = require('../../../constants/Status');
+
+const AddmissionRejistration = new mongoose.Schema({
+    name: { type: String, trim: true },
+    fname: { type: String, trim: true },
+    mname: { type: String, trim: true },
+    mobile: { type: String, },
+    aadhar: { type: String, unique: true },
+    email: { type: String, unique: true, lowercase: true },
+    dob: { type: Date, },
+    parmanentAdd: { type: String, },
+    presentAdd: { type: String, },
+    gender: { type: String, enum: Gender, },
+    cwsn: { type: String },
+    nationality: { type: String, },
+    category: { type: String },
+    previousSchoolName: { type: String },
+    classLastAttendent: { type: String },
+    eqOfFather: { type: String },
+    eqOfMother: { type: String },
+    poFather: { type: String },
+    poMother: { type: String },
+    aiFather: { type: String },
+    aiMother: { type: String },
+    password: { type: String, },
+    appliedFor: { type: String },
+    paymentStatus: { type: String, enum: Status, default: Status.PENDING },
+    approvalStatus: { type: String, enum: Status, default: Status.PENDING },
+    approvedBy: { type: String },
+    prevApplied: { type: String, enum: Status, default: Status.FALSE },
+    status: { type: String, enum: Status, default: Status.ACTIVE },
+    stamp: { type: Date, default: Date.now }
+});
+
+const Admission = mongoose.model('AdmissionRegistration', AddmissionRejistration);
+
+module.exports = Admission;
