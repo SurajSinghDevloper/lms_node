@@ -52,12 +52,16 @@ const AuthService = {
 
     // Save User (Register)
     saveUser: async (userRequestDto) => {
-        if (!userRequestDto.email || !userRequestDto.firstName || !userRequestDto.lastName || !userRequestDto.password || !userRequestDto.mobile || !userRequestDto.dob) {
+        // Destructure formData from userRequestDto
+        const { firstName, lastName, email, password, mobile, dob, address } = userRequestDto.formData;
+
+        // Check for missing details
+        if (!firstName || !lastName || !email || !password || !mobile || !dob) {
             throw new Error('Missing details');
         }
 
         // Check if user already exists
-        const foundUser = await User.findOne({ email: userRequestDto.email });
+        const foundUser = await User.findOne({ email });
         if (foundUser) {
             throw new Error('User already exists');
         }
@@ -70,15 +74,15 @@ const AuthService = {
 
         // Create a new user
         const newUser = new User({
-            firstName: userRequestDto.firstName,
-            lastName: userRequestDto.lastName,
-            email: userRequestDto.email,
-            name: `${userRequestDto.firstName} ${userRequestDto.lastName}`,
-            password: userRequestDto.password,
-            mobile: userRequestDto.mobile,
-            dob: userRequestDto.dob,
-            address: userRequestDto.address,
-            username: userRequestDto.email,
+            firstName,
+            lastName,
+            email,
+            name: `${firstName} ${lastName}`,
+            password,
+            mobile,
+            dob,
+            address,
+            username: email,
             roles: [role._id]
         });
 
@@ -87,6 +91,8 @@ const AuthService = {
 
         return 'User saved successfully';
     }
+
+
 };
 
 

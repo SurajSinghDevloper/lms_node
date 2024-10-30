@@ -13,8 +13,7 @@ const UserSchema = new mongoose.Schema({
     address: { type: String },
     userType: {
         type: String,
-        enum: ['ROLE_ADMIN', 'ROLE_STAFF', 'ROLE_PRINCIPAL', 'ROLE_VICE-PRINCIPAL', 'ROLE_STUDENT', 'UNVERIFIED_STUDENT', 'UNVERIFIED_STUDENT'], // Define possible user types
-        default: 'USER',
+        enum: ['ROLE_ADMIN', 'ROLE_STAFF', 'ROLE_PRINCIPAL', 'ROLE_VICE-PRINCIPAL', 'ROLE_STUDENT', 'UNVERIFIED_STUDENT', 'UNVERIFIED_STUDENT']
     },
     roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }], // Reference to Role
 });

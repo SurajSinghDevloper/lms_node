@@ -12,6 +12,55 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /auth/register:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Register in a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: suraj
+ *               lastName:
+ *                 type: string
+ *                 example: kumar
+ *               email:
+ *                 type: string
+ *                 example: suraj@gmail.com
+ *               mobile:
+ *                 type: string
+ *                 example: 8271932791 
+ *               password:
+ *                 type: string
+ *                 example: 8988
+ *               dob:
+ *                 type: string
+ *                 example: "1999-12-10"
+ *               address:
+ *                 type: string
+ *                 example: kanke road ranchi
+ *               username:
+ *                 type: string
+ *                 example: suraj
+ *    
+ *     responses:
+ *       201:
+ *         description: User register successfully
+ *       409:
+ *         description: User already register 
+ *       500:
+ *         description: Registration failed. Please try again
+ */
+
+
+
+/**
+ * @swagger
  * /auth/login:
  *   post:
  *     tags: [Auth]
@@ -35,6 +84,7 @@ const router = express.Router();
  *       401:
  *         description: Invalid credentials
  */
+
 router.use('/auth', authRoutes);
 
 /**
