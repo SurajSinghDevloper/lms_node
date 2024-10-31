@@ -128,6 +128,56 @@ router.use('/auth', authRoutes);
  *       400:
  *         description: Bad request
  */
+
 router.use('/addmission', addmission);
+
+
+/**
+ * @swagger
+ * /addmission/un-verified:
+ *   get:
+ *     tags: [Admission]
+ *     summary: Retrieve data of unverified admission by email
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "Bearer your_jwt_token"
+ *         description: Bearer token for authorization
+ *       - in: query
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: suraj31kumar1999@gmail.com
+ *     responses:
+ *       200:
+ *         description: User data retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User data retrieved successfully."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     email:
+ *                       type: string
+ *                       example: "suraj31kumar1999@gmail.com"
+ *       204:
+ *         description: No content found for the given email
+ *       409:
+ *         description: User with this email already exists
+ *       500:
+ *         description: An unexpected error occurred
+ */
+
+
+
 
 module.exports = router;

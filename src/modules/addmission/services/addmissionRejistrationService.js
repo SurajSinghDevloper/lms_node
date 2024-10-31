@@ -84,6 +84,33 @@ const AdmissionService = {
             console.error('Registration failed: ', error);
             return Results.FAILED; // Return failure
         }
+    },
+
+    async getDataOfUnAuthosrizedStudent(email) {
+        try {
+            // Find the user by email
+            const foundUser = await Admission.findOne({ email: email });
+
+            // If no user is found, return a custom response
+            if (!foundUser) {
+                return {
+                    status: 204, // No Content
+                    message: Results.NO_CONTENT_FOUND
+                };
+            }
+
+            // Return the found user data
+            return {
+                status: 200, // OK
+                data: foundUser
+            };
+        } catch (error) {
+            console.error("Error fetching unauthorized student data:", error);
+            return {
+                status: 500, // Internal Server Error
+                message: "An error occurred while fetching the data."
+            };
+        }
     }
 
 };
