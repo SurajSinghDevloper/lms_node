@@ -1,6 +1,6 @@
 const express = require('express');
 const { logger } = require('../../config/logger');
-const AuthService = require('../../modules/users/services/AuthService');
+const { login, saveUser } = require('../../modules/users/services/AuthService');
 const router = express.Router();
 
 
@@ -8,7 +8,7 @@ router.post('/login', async (req, res) => {
     try {
         const loginData = req.body;
         console.log(loginData)
-        const loginResponse = await AuthService.login(loginData);
+        const loginResponse = await login(loginData);
         res.status(200).json(loginResponse);
     } catch (error) {
         logger.error(error)
@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const userRequestDto = req.body;
-        const message = await AuthService.saveUser(userRequestDto);
+        const message = await saveUser(userRequestDto);
         res.status(201).json({ message });
     } catch (error) {
         console.log(error)
