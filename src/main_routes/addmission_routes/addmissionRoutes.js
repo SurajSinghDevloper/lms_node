@@ -36,14 +36,6 @@ router.get('/un-verified', authMiddleware, async (req, res) => {
             return res.sendStatus(204); // No Content
         }
 
-        if (result.status === 409) {
-            return res.status(409).json({ message: 'User with this email already exists.' });
-        }
-
-        if (result.status === 500) {
-            return res.status(500).json({ message: 'Registration failed. Please try again.' });
-        }
-
         // Handle the success case when a user is found (result.status === 200)
         return res.status(200).json({
             message: 'User data retrieved successfully.',
