@@ -16,7 +16,6 @@ const jwtTokenProvider = {
 
 // Authentication Service
 const AuthService = {
-    // Login Service
     login: async (requestData) => {
         const user = await User.findOne({ email: requestData.email });
 
@@ -52,27 +51,22 @@ const AuthService = {
 
     // Save User (Register)
     saveUser: async (userRequestDto) => {
-        // Destructure formData from userRequestDto
         const { firstName, lastName, email, password, mobile, dob, address } = userRequestDto.formData;
 
-        // Check for missing details
         if (!firstName || !lastName || !email || !password || !mobile || !dob) {
             throw new Error('Missing details');
         }
 
-        // Check if user already exists
         const foundUser = await User.findOne({ email });
         if (foundUser) {
             throw new Error('User already exists');
         }
 
-        // Find role
         const role = await Role.findOne({ name: 'ROLE_USER' });
         if (!role) {
             throw new Error('Role not found');
         }
 
-        // Create a new user
         const newUser = new User({
             firstName,
             lastName,

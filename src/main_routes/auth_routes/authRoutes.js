@@ -3,7 +3,7 @@ const { logger } = require('../../config/logger');
 const AuthService = require('../../modules/users/services/AuthService');
 const router = express.Router();
 
-// Login Route
+
 router.post('/login', async (req, res) => {
     try {
         const loginData = req.body;
