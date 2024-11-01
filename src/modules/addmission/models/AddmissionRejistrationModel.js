@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Gender = require('../../../constants/Gender');
-const Status = require('../../../constants/Status');
+import mongoose from 'mongoose';
+import Gender from '../../../constants/Gender.js';
+import Status from '../../../constants/Status.js';
 
 const AddmissionRejistration = new mongoose.Schema({
     name: { type: String, trim: true },
@@ -36,4 +36,4 @@ const AddmissionRejistration = new mongoose.Schema({
 
 const Admission = mongoose.model('AdmissionRegistration', AddmissionRejistration);
 
-module.exports = Admission;
+export default Admission;

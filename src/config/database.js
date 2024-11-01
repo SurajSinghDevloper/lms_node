@@ -1,7 +1,8 @@
 // src/config/database.js
-const mongoose = require('mongoose');
-const { logger } = require('./logger');
-require('dotenv').config();
+import mongoose from 'mongoose';
+import { logger } from './logger.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const connectDB = async () => {
     try {
@@ -22,4 +23,4 @@ const connectDB = async () => {
     }
 };
 
-module.exports = connectDB;
+export default connectDB;

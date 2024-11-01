@@ -1,6 +1,6 @@
-const express = require('express');
-const { logger } = require('../../config/logger');
-const { login, saveUser } = require('../../modules/users/services/AuthService');
+import express from 'express';
+import { logger } from '../../config/logger.js'; // Add .js extension
+import { login, saveUser } from '../../modules/users/services/AuthService.js'; // Add .js extension
 const router = express.Router();
 
 
@@ -32,4 +32,4 @@ router.post('/register', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

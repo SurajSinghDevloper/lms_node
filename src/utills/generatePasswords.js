@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto'
 
 // Character sets for password generation
 const UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -19,7 +19,7 @@ const generatedPasswords = new Set();
  *
  * @return {string} a unique password string
  */
-module.exports = function generateUniquePassword() {
+export default function generateUniquePassword() {
     let password;
     do {
         password = [];
@@ -47,6 +47,3 @@ module.exports = function generateUniquePassword() {
     generatedPasswords.add(password);
     return password;
 }
-
-// Example usage
-// console.log(generateUniquePassword());

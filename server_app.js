@@ -1,9 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./src/config/database');
-const { logger, morganMiddleware } = require('./src/config/logger');
-const routes = require('./src/main_routes/index');
-const { swaggerUi, swaggerSpec } = require('./src/config/swagger');
+import express from 'express';
+import cors from 'cors';
+import connectDB from './src/config/database.js';
+import { logger, morganMiddleware } from './src/config/logger.js';
+import routes from './src/main_routes/index.js';
+import { swaggerUi, swaggerSpec } from './src/config/swagger.js';
+
 
 const app = express();
 app.use(express.json());

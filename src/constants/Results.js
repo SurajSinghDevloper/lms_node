@@ -1,4 +1,4 @@
-module.exports = {
+const Results = {
     SUCCESS: 'SUCCESS',
     FAILED: 'FAILED',
     ALREADY_EXIST: 'ALREADY_EXIST',
@@ -8,3 +8,6 @@ module.exports = {
     ALLREADY_EXIST: 'ALLREADY_EXIST',
     INVALID_ACTION: 'INVALID_ACTION'
 };
+
+export default Results;
+

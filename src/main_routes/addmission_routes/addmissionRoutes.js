@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const AdmissionService = require('../../modules/addmission/services/addmissionRejistrationService');
-const Results = require('../../constants/Results');
-const authMiddleware = require('../../modules/middlewares/authMiddleware');
+import AdmissionService from '../../modules/addmission/services/addmissionRejistrationService.js';
+import Results from '../../constants/Results.js';
+import authMiddleware from '../../modules/middlewares/authMiddleware.js';
 
 
 router.post('/register', async (req, res) => {
@@ -48,4 +48,4 @@ router.get('/un-verified', authMiddleware, async (req, res) => {
 });
 
 
-module.exports = router;
+export default router;

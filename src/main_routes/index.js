@@ -1,6 +1,6 @@
-const express = require('express');
-const authRoutes = require('./auth_routes/authRoutes');
-const addmission = require('./addmission_routes/addmissionRoutes');
+import express from 'express';
+import authRoutes from './auth_routes/authRoutes.js';
+import addmission from './addmission_routes/addmissionRoutes.js';
 const router = express.Router();
 
 /**
@@ -180,4 +180,4 @@ router.use('/addmission', addmission);
 
 
 
-module.exports = router;
+export default router;

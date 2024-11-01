@@ -1,4 +1,4 @@
-module.exports = {
+const Status = {
     ACTIVE: 'ACTIVE',
     INACTIVE: 'INACTIVE',
     VERIFIED: 'VERIFIED',
@@ -10,4 +10,5 @@ module.exports = {
     FAILED: 'FAILED',
     APPROVED: 'APPROVED',
     REJECTED: 'REJECTED',
-}
+};
+export default Status;

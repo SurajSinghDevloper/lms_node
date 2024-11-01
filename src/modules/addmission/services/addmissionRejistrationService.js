@@ -1,10 +1,10 @@
-const Admission = require('../models/AddmissionRejistrationModel');
-const User = require('../../users/models/UserModel');
-const Role = require('../../users/models/RoleModel');
-const Results = require('../../../constants/Results');
-const UserTypes = require('../../../constants/UserTypes');
-const generateUniquePassword = require('../../../utills/generatePasswords');
-const sendCompleteRegistrationEmail = require('../../notifications/registrationEmail');
+import Admission from '../models/AddmissionRejistrationModel.js';
+import User from '../../users/models/UserModel.js';
+import Role from '../../users/models/RoleModel.js';
+import Results from '../../../constants/Results.js';
+import UserTypes from '../../../constants/UserTypes.js';
+import generateUniquePassword from '../../../utills/generatePasswords.js';
+import sendCompleteRegistrationEmail from '../../notifications/registrationEmail.js';
 
 const AdmissionService = {
     async newRegistration(dto) {
@@ -115,4 +115,4 @@ const AdmissionService = {
 
 };
 
-module.exports = AdmissionService;
+export default AdmissionService;

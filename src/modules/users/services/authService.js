@@ -1,8 +1,9 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/UserModel');
-const Role = require('../models/RoleModel');
-require('dotenv').config();
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/UserModel.js';
+import Role from '../models/RoleModel.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // JWT Token Provider
 const jwtTokenProvider = {
@@ -15,7 +16,7 @@ const jwtTokenProvider = {
 };
 
 
-const login = async (requestData) => {
+export const login = async (requestData) => {
     const user = await User.findOne({ email: requestData.email });
 
     if (!user) {
@@ -49,7 +50,7 @@ const login = async (requestData) => {
 }
 
 // Save User (Register)
-const saveUser = async (userRequestDto) => {
+export const saveUser = async (userRequestDto) => {
     const { firstName, lastName, email, password, mobile, dob, address } = userRequestDto.formData;
 
     if (!firstName || !lastName || !email || !password || !mobile || !dob) {
@@ -85,12 +86,3 @@ const saveUser = async (userRequestDto) => {
     return 'User saved successfully';
 }
 
-
-
-
-
-
-module.exports = {
-    login,
-    saveUser
-};

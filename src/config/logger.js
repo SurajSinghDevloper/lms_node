@@ -1,36 +1,7 @@
-// // src/config/logger.js
-// const winston = require('winston');
-// const morgan = require('morgan');
-
-// const logger = winston.createLogger({
-//     level: 'info',
-//     format: winston.format.combine(
-//         winston.format.timestamp(),
-//         winston.format.printf(({ timestamp, level, message }) => {
-//             return `${timestamp} [${level.toUpperCase()}]: ${message}`;
-//         })
-//     ),
-//     transports: [
-//         new winston.transports.Console(),
-//         new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-//         new winston.transports.File({ filename: 'logs/combined.log' })
-//     ],
-// });
-
-// // Morgan stream configuration to use Winston's logger
-// const morganMiddleware = morgan('combined', {
-//     stream: {
-//         write: (message) => logger.info(message.trim()),
-//     },
-// });
-
-// module.exports = { logger, morganMiddleware };
-
-
 
 // src/config/logger.js
-const winston = require('winston');
-const morgan = require('morgan');
+import winston from 'winston';
+import morgan from 'morgan';
 
 // Configure Winston logger
 const logger = winston.createLogger({
@@ -73,4 +44,4 @@ const morganMiddleware = morgan(
     }
 );
 
-module.exports = { logger, morganMiddleware };
+export { logger, morganMiddleware };

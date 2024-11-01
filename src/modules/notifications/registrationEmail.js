@@ -1,10 +1,10 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 // Set up the nodemailer transporter with your email service credentials
 const transporter = nodemailer.createTransport({
     service: 'gmail', // Replace with your email service provider
     auth: {
-        user: 'surajkumar.nrt@gmail.com', // Replace with your email
+        user: 'surajkumar.nrt@gmail.com',
         // pass: 'suraj@prime11'   
         pass: 'fahp kngo sbxi fhry'
     }
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
  * @param {string} userPassword - Generated password for the user
  * @return {Promise<string>} - A promise resolving to 'SUCCESS' or 'FAILED'
  */
-module.exports = async function sendCompleteRegistrationEmail(userEmail, userPassword) {
+export default async function sendCompleteRegistrationEmail(userEmail, userPassword) {
     try {
         // Registration link
         const registrationLink = "http://localhost:5173/authentication";
@@ -67,9 +67,3 @@ module.exports = async function sendCompleteRegistrationEmail(userEmail, userPas
         return 'FAILED';
     }
 }
-
-// Example usage
-// (async () => {
-//   const result = await sendCompleteRegistrationEmail('recipient@example.com', 'generatedPassword123');
-//   console.log(result); // Outputs 'SUCCESS' or 'FAILED'
-// })();
