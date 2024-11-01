@@ -1,6 +1,6 @@
 import express from 'express';
 import { logger } from '../../config/logger.js'; // Add .js extension
-import { login, saveUser } from '../../modules/users/services/AuthService.js'; // Add .js extension
+import { login, saveUser } from '../../modules/users/services/authService.js'; // Add .js extension
 const router = express.Router();
 
 
