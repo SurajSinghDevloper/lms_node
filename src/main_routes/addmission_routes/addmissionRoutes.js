@@ -47,5 +47,21 @@ router.get('/un-verified', authMiddleware, async (req, res) => {
     }
 });
 
+router.post('/complete-form,', authMiddleware, async (req, res) => {
+    try {
+        const result = await AdmissionService.updateRegistration(req.body);
+        switch (result) {
+            case Results.NO_CONTENT_FOUND:
+                return res.status(204).json({ message: "NO USER FOUND BY DETAILS" });
+            case Results.FAILED:
+                return res.status(500).json({ message: 'WENT WRONG WHILE UPDATEING' });
+            case Results.SUCCESS:
+                return res.status(200).json({ message: "DETAILS UPDATED SUCCESSFULLY" });
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
+    }
+})
 
 export default router;

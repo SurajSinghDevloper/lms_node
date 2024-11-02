@@ -18,6 +18,7 @@ const AddmissionRejistration = new mongoose.Schema({
     category: { type: String },
     previousSchoolName: { type: String },
     classLastAttendent: { type: String },
+    marksScored: { type: String },
     eqOfFather: { type: String },
     eqOfMother: { type: String },
     poFather: { type: String },
@@ -29,6 +30,7 @@ const AddmissionRejistration = new mongoose.Schema({
     paymentStatus: { type: String, enum: Status, default: Status.PENDING },
     approvalStatus: { type: String, enum: Status, default: Status.PENDING },
     approvedBy: { type: String },
+    approvedDate: { type: Date },
     prevApplied: { type: String, enum: Status, default: Status.FALSE },
     status: { type: String, enum: Status, default: Status.ACTIVE },
     stamp: { type: Date, default: Date.now }

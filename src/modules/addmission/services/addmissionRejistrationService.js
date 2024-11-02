@@ -111,7 +111,55 @@ const AdmissionService = {
                 message: "An error occurred while fetching the data."
             };
         }
+    },
+
+    async updateRegistration(dto) {
+        try {
+            // Check if a user with the same email already exists
+            const existingRegistration = await Admission.findOne({ email: dto.email });
+            if (!existingRegistration) {
+                return Results.NO_CONTENT_FOUND;
+            }
+
+            // Update the admission details with new values from dto
+            Object.assign(existingRegistration, {
+                name: dto.name,
+                fname: dto.fname,
+                mname: dto.mname,
+                mobile: dto.mobile,
+                aadhar: dto.aadhar,
+                dob: dto.dob,
+                parmanentAdd: dto.parmanentAdd,
+                presentAdd: dto.presentAdd,
+                gender: dto.gender,
+                cwsn: dto.cwsn,
+                nationality: dto.nationality,
+                category: dto.category,
+                religion: dto.religion,
+                previousSchoolName: dto.previousSchoolName,
+                classLastAttendent: dto.classLastAttendent,
+                marksScored: dto.marksScored,
+                eqOfFather: dto.eqOfFather,
+                eqOfMother: dto.eqOfMother,
+                poFather: dto.poFather,
+                poMother: dto.poMother,
+                aiFather: dto.aiFather,
+                aiMother: dto.aiMother,
+                password: dto.password,
+                appliedFor: dto.appliedFor,
+                prevApplied: dto.prevApplied
+            });
+
+            const savedAdmission = await existingRegistration.save();
+
+            return savedAdmission === Results.SUCCESS ? Results.SUCCESS : Results.FAILED;
+
+        } catch (error) {
+            console.error('Registration failed: ', error);
+            return Results.FAILED;
+        }
     }
+
 
 };
 

@@ -178,6 +178,146 @@ router.use('/addmission', addmission);
  */
 
 
+/**
+ * @swagger
+ * /addmission/complete-form:
+ *   post:
+ *     tags: [Admission]
+ *     summary: Update admission registration details
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "Bearer your_jwt_token"
+ *         description: Bearer token for authorization
+ *       - in: body
+ *         name: AdmissionData
+ *         description: Admission details for update
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             aadhar:
+ *               type: string
+ *               example: "111122223333"
+ *             aiFather:
+ *               type: string
+ *               example: "400000"
+ *             aiMother:
+ *               type: string
+ *               example: "300000"
+ *             appliedFor:
+ *               type: string
+ *               example: "VII"
+ *             approvalStatus:
+ *               type: string
+ *               example: "PENDING"
+ *             category:
+ *               type: string
+ *               example: "GENRAL"
+ *             classLastAttendent:
+ *               type: string
+ *               example: "6"
+ *             cwsn:
+ *               type: string
+ *               example: ""
+ *             dob:
+ *               type: string
+ *               format: date
+ *               example: "2024-11-01"
+ *             email:
+ *               type: string
+ *               example: "suraj31kumar1999@gmail.com"
+ *             eqOfFather:
+ *               type: string
+ *               example: "High School"
+ *             eqOfMother:
+ *               type: string
+ *               example: "High School"
+ *             fname:
+ *               type: string
+ *               example: "Devpujan Kumar Singh"
+ *             gender:
+ *               type: string
+ *               example: "Male"
+ *             marksScored:
+ *               type: string
+ *               example: "70"
+ *             mname:
+ *               type: string
+ *               example: "Pushpa Devi"
+ *             mobile:
+ *               type: string
+ *               example: "827193791"
+ *             name:
+ *               type: string
+ *               example: "Suraj Kumar"
+ *             nationality:
+ *               type: string
+ *               example: "Indian"
+ *             parmanentAdd:
+ *               type: string
+ *               example: "kanke road ranchi jharkhand"
+ *             password:
+ *               type: string
+ *               example: "8988"
+ *             paymentStatus:
+ *               type: string
+ *               example: "PENDING"
+ *             poFather:
+ *               type: string
+ *               example: "Business Man"
+ *             poMother:
+ *               type: string
+ *               example: "Business Man"
+ *             presentAdd:
+ *               type: string
+ *               example: "jharkahnd"
+ *             prevApplied:
+ *               type: string
+ *               example: "FALSE"
+ *             previousSchoolName:
+ *               type: string
+ *               example: "Dav Nandraj public school"
+ *             religion:
+ *               type: string
+ *               example: "HINDU"
+ *     responses:
+ *       200:
+ *         description: Details updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "DETAILS UPDATED SUCCESSFULLY"
+ *       204:
+ *         description: No user found by details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "NO USER FOUND BY DETAILS"
+ *       500:
+ *         description: Unexpected error occurred
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "An unexpected error occurred. Please try again later."
+ */
 
 
 export default router;
