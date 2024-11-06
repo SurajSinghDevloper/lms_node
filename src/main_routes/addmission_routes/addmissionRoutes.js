@@ -47,7 +47,7 @@ router.get('/un-verified', authMiddleware, async (req, res) => {
     }
 });
 
-router.post('/complete-form,', authMiddleware, async (req, res) => {
+router.post('/complete-form', authMiddleware, async (req, res) => {
     try {
         const result = await AdmissionService.updateRegistration(req.body);
         switch (result) {
@@ -62,6 +62,11 @@ router.post('/complete-form,', authMiddleware, async (req, res) => {
         console.error('Error during registration:', error);
         return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
+})
+
+router.get("/update/passwod", async (req, res) => {
+    await AdmissionService.updatePasswordOfUsers()
+    res.send("updated pass")
 })
 
 export default router;

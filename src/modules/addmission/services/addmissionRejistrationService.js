@@ -79,7 +79,6 @@ const AdmissionService = {
             // Send registration email
             const emailResult = await sendCompleteRegistrationEmail(savedAdmission.email, userPassword);
             return (emailResult === Results.SUCCESS) ? Results.SUCCESS : Results.FAILED;
-
         } catch (error) {
             console.error('Registration failed: ', error);
             return Results.FAILED; // Return failure
@@ -116,11 +115,12 @@ const AdmissionService = {
     async updateRegistration(dto) {
         try {
             // Check if a user with the same email already exists
+            console.log("1......", dto)
             const existingRegistration = await Admission.findOne({ email: dto.email });
             if (!existingRegistration) {
                 return Results.NO_CONTENT_FOUND;
             }
-
+            console.log("2......")
             // Update the admission details with new values from dto
             Object.assign(existingRegistration, {
                 name: dto.name,
@@ -133,6 +133,7 @@ const AdmissionService = {
                 presentAdd: dto.presentAdd,
                 gender: dto.gender,
                 cwsn: dto.cwsn,
+                religion: dto.religion,
                 nationality: dto.nationality,
                 category: dto.category,
                 religion: dto.religion,
@@ -149,17 +150,38 @@ const AdmissionService = {
                 appliedFor: dto.appliedFor,
                 prevApplied: dto.prevApplied
             });
-
+            console.log("3......")
             const savedAdmission = await existingRegistration.save();
-
-            return savedAdmission === Results.SUCCESS ? Results.SUCCESS : Results.FAILED;
+            console.log("4......")
+            return savedAdmission ? Results.SUCCESS : Results.FAILED;
 
         } catch (error) {
             console.error('Registration failed: ', error);
             return Results.FAILED;
         }
-    }
+    },
 
+    async updatePasswordOfUsers() {
+        try {
+            const allUsers = await User.find(); // Retrieve all users
+
+            for (const user of allUsers) {
+                const register = await Admission.findOne({ email: user.email });
+
+                if (register) {
+                    console.log(`Updating password for ${user.email, " <.>", register.password}`);
+                    user.password = register.password.trim(); // Ensure password is hashed if needed
+                    await user.save(); // Save the updated user
+                } else {
+                    console.log(`No matching Admission record found for ${user.email}`);
+                }
+            }
+
+            console.log("Passwords updated successfully for all users.");
+        } catch (error) {
+            console.error("Error updating passwords:", error);
+        }
+    },
 
 };
 

@@ -24,7 +24,6 @@ export const login = async (requestData) => {
     }
 
     const isPasswordValid = await bcrypt.compare(requestData.password, user.password);
-
     if (!isPasswordValid) {
         throw new Error('Invalid credentials');
     }
