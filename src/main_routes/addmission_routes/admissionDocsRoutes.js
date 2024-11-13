@@ -1,96 +1,89 @@
 import express from 'express';
-import admissionDocsService from './services/admissionDocsService'; // Path to your admissionDocsService
-import fileHandler from './services/fileHandler'; // Path to your file handler
-import Status from '../../../constants/Status'; // Path to your Status constants
-import multer from 'multer';
-import path from 'path';
+import AddmissionDocsServices from '../../modules/addmission/services/addmissionDocsServices.js';
 
 const router = express.Router();
 
-// Set up multer for file handling (you can modify this as needed)
-const storage = multer.memoryStorage(); // Use memory storage to get files in buffer format
-const upload = multer({ storage: storage });
-
-// 1. Create Admission Documents
 router.post('/create', async (req, res) => {
     try {
-        const { studentId, application_no, documents } = req.body;
-        const admissionDocsData = { studentId, application_no, documents };
-        const newDocs = await admissionDocsService.createAdmissionDocs(admissionDocsData);
-        res.status(201).json(newDocs);
+        const result = await AddmissionDocsServices.createAdmissionDocs(req.body);
+
+        if (!result) {
+            return res.status(500).json({ message: 'Error creating admission documents.' });
+        }
+
+        return res.status(201).json({ message: 'Admission documents created successfully.', data: result });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Error during document creation:', error);
+        return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
 
-// 2. Get Admission Documents for a Student
 router.get('/:studentId', async (req, res) => {
     try {
         const { studentId } = req.params;
-        const admissionDocs = await admissionDocsService.getAdmissionDocs(studentId);
-        if (!admissionDocs) {
-            return res.status(404).json({ message: 'Admission documents not found' });
+        const result = await AddmissionDocsServices.getAdmissionDocs(studentId);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Admission documents not found.' });
         }
-        res.status(200).json(admissionDocs);
+
+        return res.status(200).json({
+            message: 'Admission documents retrieved successfully.',
+            data: result,
+        });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Error fetching admission documents:', error);
+        return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
 
-// 3. Add Document for a Student
-router.post('/:studentId/add-document', upload.single('file'), async (req, res) => {
+router.post('/:studentId/document', async (req, res) => {
     try {
         const { studentId } = req.params;
-        const { type } = req.body; // Document type
-        const file = req.file; // The uploaded file
-        if (!file) {
-            return res.status(400).json({ message: 'No file uploaded' });
+        const document = req.body;
+        const result = await AddmissionDocsServices.addDocument(studentId, document);
+
+        if (!result) {
+            return res.status(500).json({ message: 'Error adding document to admission record.' });
         }
 
-        const fileName = `doc_${Date.now()}`; // You can customize the file name
-        const fileType = file.mimetype;
-
-        // Save the file using the fileHandler
-        const filePath = fileHandler.saveFile(file.buffer, fileType, fileName);
-
-        const document = {
-            type,
-            file: filePath,
-            veryfiedStatus: Status.UNVERIFIED,
-        };
-
-        const updatedDocs = await admissionDocsService.addDocument(studentId, document);
-        res.status(200).json(updatedDocs);
+        return res.status(200).json({ message: 'Document added successfully.', data: result });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Error adding document:', error);
+        return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
 
-// 4. Update Document Verification Status
-router.put('/:studentId/update-document-status/:documentId', async (req, res) => {
+router.put('/:studentId/document/:documentId/status', async (req, res) => {
     try {
         const { studentId, documentId } = req.params;
-        const { status } = req.body; // Status (e.g., 'verified', 'unverified')
+        const { status } = req.body;
+        const result = await AddmissionDocsServices.updateDocumentStatus(studentId, documentId, status);
 
-        if (!Object.values(Status).includes(status)) {
-            return res.status(400).json({ message: 'Invalid status' });
+        if (!result) {
+            return res.status(404).json({ message: 'Document or admission record not found.' });
         }
 
-        const updatedDocs = await admissionDocsService.updateDocumentStatus(studentId, documentId, status);
-        res.status(200).json(updatedDocs);
+        return res.status(200).json({ message: 'Document status updated successfully.', data: result });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Error updating document status:', error);
+        return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
 
-// 5. Delete Document for a Student
-router.delete('/:studentId/delete-document/:documentId', async (req, res) => {
+router.delete('/:studentId/document/:documentId', async (req, res) => {
     try {
         const { studentId, documentId } = req.params;
-        const updatedDocs = await admissionDocsService.deleteDocument(studentId, documentId);
-        res.status(200).json(updatedDocs);
+        const result = await AddmissionDocsServices.deleteDocument(studentId, documentId);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Document or admission record not found.' });
+        }
+
+        return res.status(200).json({ message: 'Document deleted successfully.', data: result });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error('Error deleting document:', error);
+        return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
 
