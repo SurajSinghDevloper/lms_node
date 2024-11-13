@@ -1,6 +1,7 @@
 import express from 'express';
 import authRoutes from './auth_routes/authRoutes.js';
 import addmission from './addmission_routes/addmissionRoutes.js';
+import addmissionDocsServices from '../modules/addmission/services/addmissionDocsServices.js';
 const router = express.Router();
 
 /**
@@ -319,5 +320,7 @@ router.use('/addmission', addmission);
  *                   example: "An unexpected error occurred. Please try again later."
  */
 
+
+router.use('/addmission-docs', addmissionDocsServices);
 
 export default router;

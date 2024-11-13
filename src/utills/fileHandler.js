@@ -46,3 +46,27 @@ const getImageByName = (imageName) => {
         return null;
     }
 };
+
+/**
+ * Deletes a file from the server.
+ * @param {string} filePath - The full file path to delete.
+ * @returns {boolean} - Returns true if file deleted successfully, otherwise false.
+ */
+const deleteFile = (filePath) => {
+    try {
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error deleting file:", error);
+        return false;
+    }
+};
+
+export default {
+    saveFile,
+    deleteFile,
+    getImageByName
+};
