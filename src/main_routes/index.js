@@ -1,7 +1,7 @@
-import express from 'express';
-import authRoutes from './auth_routes/authRoutes.js';
-import addmission from './addmission_routes/addmissionRoutes.js';
-import addmissionDocsServices from '../modules/addmission/services/addmissionDocsServices.js';
+import express from "express";
+import authRoutes from "./auth_routes/authRoutes.js";
+import addmission from "./addmission_routes/addmissionRoutes.js";
+import addmissionDocsServices from "../modules/addmission/services/addmissionDocsServices.js";
 const router = express.Router();
 
 /**
@@ -35,7 +35,7 @@ const router = express.Router();
  *                 example: suraj@gmail.com
  *               mobile:
  *                 type: string
- *                 example: 8271932791 
+ *                 example: 8271932791
  *               password:
  *                 type: string
  *                 example: 8988
@@ -48,17 +48,15 @@ const router = express.Router();
  *               username:
  *                 type: string
  *                 example: suraj
- *    
+ *
  *     responses:
  *       201:
  *         description: User register successfully
  *       409:
- *         description: User already register 
+ *         description: User already register
  *       500:
  *         description: Registration failed. Please try again
  */
-
-
 
 /**
  * @swagger
@@ -86,7 +84,7 @@ const router = express.Router();
  *         description: Invalid credentials
  */
 
-router.use('/auth', authRoutes);
+router.use("/auth", authRoutes);
 
 /**
  * @swagger
@@ -130,8 +128,7 @@ router.use('/auth', authRoutes);
  *         description: Bad request
  */
 
-router.use('/addmission', addmission);
-
+router.use("/addmission", addmission);
 
 /**
  * @swagger
@@ -177,7 +174,6 @@ router.use('/addmission', addmission);
  *       500:
  *         description: An unexpected error occurred
  */
-
 
 /**
  * @swagger
@@ -320,7 +316,6 @@ router.use('/addmission', addmission);
  *                   example: "An unexpected error occurred. Please try again later."
  */
 
-
-router.use('/addmission-docs', addmissionDocsServices);
+// router.use('/addmission-docs', addmissionDocsServices);
 
 export default router;
