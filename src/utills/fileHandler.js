@@ -1,26 +1,23 @@
 import fs from 'fs';
-import { type } from 'os';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
 let __dirname = ''
 const fileHandler = {
     saveFile(file, fileType, fileOf, fileName) {
         __dirname = manageFileLocation(fileOf, fileType);
-        const directoryPath = path.join(__dirname, 'uploads');
+        const directoryPath = path.join(__dirname);
         if (!fs.existsSync(directoryPath)) {
             fs.mkdirSync(directoryPath);
         }
 
-        const extension = fileType.split('/')[1];
-        const filePath = path.join(directoryPath, `${fileName}.${extension}`);
+        // const extension = fileType.split('/')[1];
+        const filePath = path.join(directoryPath, `${fileName}`);
         fs.writeFileSync(filePath, file);
         return filePath;
     },
 
     getImageByName(imageName) {
-        const directoryPath = path.join(__dirname, 'uploads');
+        const directoryPath = path.join(__dirname);
         const files = fs.readdirSync(directoryPath);
         const imageFile = files.find(file => file.startsWith(imageName));
 

@@ -1,23 +1,29 @@
 import express from 'express';
 import AddmissionDocsServices from '../../modules/addmission/services/addmissionDocsServices.js';
-import parseMultipart from '../../modules/middlewares/formDataMiddleware.js';
+import uploadStorage from '../../utills/multer.js';
 
 const router = express.Router();
 
-router.post('/create', parseMultipart, async (req, res) => {
+router.post('/create', uploadStorage.single("file"), async (req, res) => {
     try {
-        const result = await AddmissionDocsServices.createAdmissionDocs(req.body);
+        console.log(req.body, req.savedFileName);
+
+        const result = await AddmissionDocsServices.createAdmissionDocs(req.body, req.savedFileName);
 
         if (!result) {
             return res.status(500).json({ message: 'Error creating admission documents.' });
         }
 
-        // return res.status(201).json({ message: 'Admission documents created successfully.', data: result });
+        return res.status(201).json({
+            message: `successfully`,
+            fileName: req.savedFileName,
+        });
     } catch (error) {
         console.error('Error during document creation:', error);
         return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
+
 
 router.get('/:studentId', async (req, res) => {
     try {

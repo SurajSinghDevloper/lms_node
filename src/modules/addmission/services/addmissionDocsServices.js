@@ -4,17 +4,15 @@ import AdmissionDocs from '../models/AddmissionDocsModel.js';
 import Status from '../../../constants/Status.js';
 
 const AddmissionDocsServices = {
-    async createAdmissionDocs(data) {
-        const { studentId, application_no, type, file } = data;
-        console.log(studentId, '\n', application_no, '\n', type, '\n')
+    async createAdmissionDocs(data, savedFileName) {
+        const { studentId, application_no, type } = data;
         try {
-            const filename = fileHandler.saveFile(file, type, 'STUDENTS', application_no + "_" + type)
             const admissionDocs = new AdmissionDocs({
                 studentId: studentId,
                 application_no: application_no,
                 documents: [{
                     type: type,
-                    file: filename,
+                    file: savedFileName,
                     veryfiedStatus: Status.UNVERIFIED
                 }]
             });
