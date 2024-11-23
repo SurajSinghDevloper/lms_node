@@ -1,11 +1,13 @@
 import fs from 'fs';
+import { type } from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let __dirname = ''
 const fileHandler = {
-    saveFile(file, fileType, fileName) {
+    saveFile(file, fileType, fileOf, fileName) {
+        __dirname = manageFileLocation(fileOf, fileType);
         const directoryPath = path.join(__dirname, 'uploads');
         if (!fs.existsSync(directoryPath)) {
             fs.mkdirSync(directoryPath);
@@ -41,6 +43,32 @@ const fileHandler = {
             return false;
         }
     }
+}
+
+const manageFileLocation = (fileOf, fileType) => {
+    let destination = ''
+    switch (fileOf) {
+        case 'STUDENTS':
+            switch (fileType) {
+                case 'PERSONAL_DOCS':
+                    destination = 'D://Personla_WS//MERN_RESOURCES//STUDENTS//PERSONAL_DOCS//'
+                    break;
+                case 'CERTIFICATES':
+                    destination = 'D://Personla_WS//MERN_RESOURCES//STUDENTS//CERTIFICATES//'
+                    break;
+                case 'OTHERS':
+                    destination = 'D://Personla_WS//MERN_RESOURCES//STUDENTS//OTHERS//'
+                    break;
+
+                default:
+                    break;
+            }
+            break;
+
+        default:
+            break;
+    }
+    return destination;
 }
 
 export default fileHandler;

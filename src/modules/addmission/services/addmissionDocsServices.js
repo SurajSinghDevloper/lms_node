@@ -8,7 +8,7 @@ const AddmissionDocsServices = {
         const { studentId, application_no, type, file } = data;
         console.log(studentId, '\n', application_no, '\n', type, '\n')
         try {
-            const filename = fileHandler.saveFile(file, type, application_no + "_" + type)
+            const filename = fileHandler.saveFile(file, type, 'STUDENTS', application_no + "_" + type)
             const admissionDocs = new AdmissionDocs({
                 studentId: studentId,
                 application_no: application_no,
