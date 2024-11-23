@@ -1,11 +1,23 @@
 import path from 'path';
 import fileHandler from '../../../utills/fileHandler.js';
 import AdmissionDocs from '../models/AddmissionDocsModel.js';
+import Status from '../../../constants/Status.js';
 
 const AddmissionDocsServices = {
     async createAdmissionDocs(data) {
+        const { studentId, application_no, type, file } = data;
+        console.log(studentId, '\n', application_no, '\n', type, '\n')
         try {
-            const admissionDocs = new AdmissionDocs(data);
+            const filename = fileHandler.saveFile(file, type, application_no + "_" + type)
+            const admissionDocs = new AdmissionDocs({
+                studentId: studentId,
+                application_no: application_no,
+                documents: [{
+                    type: type,
+                    file: filename,
+                    veryfiedStatus: Status.UNVERIFIED
+                }]
+            });
             await admissionDocs.save();
             return admissionDocs;
         } catch (error) {

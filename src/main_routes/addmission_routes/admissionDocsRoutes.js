@@ -1,9 +1,10 @@
 import express from 'express';
 import AddmissionDocsServices from '../../modules/addmission/services/addmissionDocsServices.js';
+import parseMultipart from '../../modules/middlewares/formDataMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create', async (req, res) => {
+router.post('/create', parseMultipart, async (req, res) => {
     try {
         const result = await AddmissionDocsServices.createAdmissionDocs(req.body);
 
@@ -11,7 +12,7 @@ router.post('/create', async (req, res) => {
             return res.status(500).json({ message: 'Error creating admission documents.' });
         }
 
-        return res.status(201).json({ message: 'Admission documents created successfully.', data: result });
+        // return res.status(201).json({ message: 'Admission documents created successfully.', data: result });
     } catch (error) {
         console.error('Error during document creation:', error);
         return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });

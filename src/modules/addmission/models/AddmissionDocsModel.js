@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Status from '../../../constants/Status.js';
 
 const AddmissionDocsModel = new mongoose.Schema({
-    studentId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    studentId: { type: String, required: true },
     application_no: { type: String, trim: true },
     documents: [{
         // Document type (e.g., photo, marksheet)
