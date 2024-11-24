@@ -1,21 +1,26 @@
 import express from 'express';
 import AddmissionDocsServices from '../../modules/addmission/services/addmissionDocsServices.js';
 import uploadStorage from '../../utills/multer.js';
+import authMiddleware from '../../modules/middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create', uploadStorage.single("file"), async (req, res) => {
+router.post('/create', authMiddleware, uploadStorage.single("file"), async (req, res) => {
     try {
-        console.log(req.body, req.savedFileName);
+        let result = '';
 
-        const result = await AddmissionDocsServices.createAdmissionDocs(req.body, req.savedFileName);
+        if (req.savedFileName) {
+            result = await AddmissionDocsServices.createAdmissionDocs(req.body, req.savedFileName);
+        } else {
+            return res.status(400).json({ message: 'Error While Uploading Documents.' });
+        }
 
         if (!result) {
             return res.status(500).json({ message: 'Error creating admission documents.' });
         }
 
         return res.status(201).json({
-            message: `successfully`,
+            message: `Doc Uploaded Successfully`,
             fileName: req.savedFileName,
         });
     } catch (error) {
@@ -25,9 +30,15 @@ router.post('/create', uploadStorage.single("file"), async (req, res) => {
 });
 
 
-router.get('/:studentId', async (req, res) => {
+router.get('/doc', async (req, res) => {
     try {
-        const { studentId } = req.params;
+        const { studentId } = req.query; // Use req.query to retrieve query parameters
+        console.log("➡️ Query Parameters: ", req.query);
+
+        if (!studentId) {
+            return res.status(400).json({ message: 'studentId is required.' });
+        }
+
         const result = await AddmissionDocsServices.getAdmissionDocs(studentId);
 
         if (!result) {
@@ -43,6 +54,7 @@ router.get('/:studentId', async (req, res) => {
         return res.status(500).json({ message: 'An unexpected error occurred. Please try again later.' });
     }
 });
+
 
 router.post('/:studentId/document', async (req, res) => {
     try {

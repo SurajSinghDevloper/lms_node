@@ -7,21 +7,51 @@ const AddmissionDocsServices = {
     async createAdmissionDocs(data, savedFileName) {
         const { studentId, application_no, type } = data;
         try {
-            const admissionDocs = new AdmissionDocs({
-                studentId: studentId,
-                application_no: application_no,
-                documents: [{
+            // Find an existing record by studentId
+            const existingAdmissionDoc = await AdmissionDocs.findOne({ studentId });
+
+            if (existingAdmissionDoc) {
+                // Check if a document of the same type already exists
+                const existingDocument = existingAdmissionDoc.documents.find(doc => doc.type === type);
+
+                if (existingDocument) {
+                    // Update the existing document
+                    existingDocument.file = savedFileName;
+                    existingDocument.veryfiedStatus = Status.UNVERIFIED; // Reset verified status
+                } else {
+                    // Add the new document if the type doesn't exist
+                    const newDocument = {
+                        type: type,
+                        file: savedFileName,
+                        veryfiedStatus: Status.UNVERIFIED,
+                    };
+                    existingAdmissionDoc.documents.push(newDocument);
+                }
+
+                // Save the updated document
+                await existingAdmissionDoc.save();
+                return existingAdmissionDoc;
+            } else {
+                // If no record exists, create a new one
+                const newDocument = {
                     type: type,
                     file: savedFileName,
-                    veryfiedStatus: Status.UNVERIFIED
-                }]
-            });
-            await admissionDocs.save();
-            return admissionDocs;
+                    veryfiedStatus: Status.UNVERIFIED,
+                };
+                const admissionDocs = new AdmissionDocs({
+                    studentId: studentId,
+                    application_no: application_no,
+                    documents: [newDocument],
+                });
+                await admissionDocs.save();
+                return admissionDocs;
+            }
         } catch (error) {
             throw new Error(`Error creating admission documents: ${error.message}`);
         }
-    },
+    }
+    ,
+
 
     async getAdmissionDocs(studentId) {
         try {
