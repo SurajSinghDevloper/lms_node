@@ -1,6 +1,10 @@
 import multer from "multer";
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
+import FILE_LOCATIONS from "../config/fileLocations.js";
+// Load environment variables
+dotenv.config();
 
 const manageFileLocation = (fileOf, fileType) => {
     let destination = "";
@@ -8,16 +12,13 @@ const manageFileLocation = (fileOf, fileType) => {
         case "STUDENTS":
             switch (fileType) {
                 case "PERSONAL_DOCS":
-                    destination =
-                        "D://Personla_WS//MERN_RESOURCES//STUDENTS//PERSONAL_DOCS//";
+                    destination = FILE_LOCATIONS.STUDENTS.PERSONAL_DOCS;
                     break;
                 case "CERTIFICATES":
-                    destination =
-                        "D://Personla_WS//MERN_RESOURCES//STUDENTS//CERTIFICATES//";
+                    destination = FILE_LOCATIONS.STUDENTS.CERTIFICATES;
                     break;
                 case "OTHERS":
-                    destination =
-                        "D://Personla_WS//MERN_RESOURCES//STUDENTS//OTHERS//";
+                    destination = FILE_LOCATIONS.STUDENTS.OTHERS;
                     break;
                 default:
                     throw new Error("Invalid fileType");
@@ -54,7 +55,6 @@ const storage = multer.diskStorage({
         filesOf = fileOf
         types = type
         try {
-            console.log(req.body);
             destination = manageFileLocation(fileOf, fileType);
 
             // Ensure the folder exists
@@ -83,4 +83,4 @@ const storage = multer.diskStorage({
 
 const uploadStorage = multer({ storage: storage });
 
-export default uploadStorage
+export default uploadStorage;
