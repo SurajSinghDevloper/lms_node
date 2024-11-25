@@ -2,6 +2,9 @@ import express from "express";
 import authRoutes from "./auth_routes/authRoutes.js";
 import addmission from "./addmission_routes/addmissionRoutes.js";
 import addmissionDoc from './addmission_routes/admissionDocsRoutes.js'
+import viewImg from "./view_image_route.js"
+
+
 const router = express.Router();
 
 /**
@@ -317,5 +320,6 @@ router.use("/addmission", addmission);
  */
 
 router.use('/addmission-docs', addmissionDoc);
+router.use('/all', viewImg);
 
 export default router;

@@ -30,11 +30,9 @@ router.post('/create', authMiddleware, uploadStorage.single("file"), async (req,
 });
 
 
-router.get('/doc', async (req, res) => {
+router.get('/doc', authMiddleware, async (req, res) => {
     try {
-        const { studentId } = req.query; // Use req.query to retrieve query parameters
-        console.log("➡️ Query Parameters: ", req.query);
-
+        const { studentId } = req.query;
         if (!studentId) {
             return res.status(400).json({ message: 'studentId is required.' });
         }

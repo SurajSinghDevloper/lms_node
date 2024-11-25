@@ -1,5 +1,5 @@
 import path from 'path';
-import fileHandler from '../../../utills/fileHandler.js';
+import fileHandler from '../../../utills/getFile.js';
 import AdmissionDocs from '../models/AddmissionDocsModel.js';
 import Status from '../../../constants/Status.js';
 

@@ -1,18 +1,7 @@
-import express from 'express';
-import path from 'path'
-import FILE_LOCATIONS from '../config/fileLocations.js';
-
-const router = express.Router();
-
-// Route to view a file
-router.get('/files/view', (req, res) => {
 
 
-    getFile(req, res);
-
-});
 const getFile = (req, res) => {
-    const { fileOf, fileType, fileName } = req.query;
+    const { fileOf, fileType, fileName } = req.querry;
 
     try {
         // Determine the file's destination directory
@@ -22,7 +11,7 @@ const getFile = (req, res) => {
         const filePath = path.join(destination, fileName);
 
         // Check if the file exists
-        if (!destination) {
+        if (!fs.existsSync(filePath)) {
             return res.status(404).json({ message: "File not found." });
         }
 
@@ -63,4 +52,4 @@ const manageFileLocation = (fileOf, fileType) => {
     return destination;
 };
 
-export default router;
+export default getFile;
