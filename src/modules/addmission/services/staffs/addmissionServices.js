@@ -40,7 +40,7 @@ const admissionServices = {
     async getUnApprovedStudent(email) {
         try {
             // Find the user by email
-            const foundUser = await Admission.findOne({ email: email });
+            const foundUser = await Admission.findOne({ email: email }).select(' -__v -cwsn -password');
 
             // If no user is found, return a custom response
             if (!foundUser) {
