@@ -17,8 +17,8 @@ pipeline {
             steps {
                 script {
                     // Use Jenkins credential for PAT authentication
-                    withCredentials([string(credentialsId: 'GitHub_PAT', variable: 'GIT_PAT')]) {
-                        git url: "https://github.com/SurajSinghDevloper/lms_node.git", branch: 'master'
+                    withCredentials([string(credentialsId: 'GitPat', variable: 'GIT_PAT')]) {
+                        git url: "https://${GIT_PAT}@github.com/SurajSinghDevloper/lms_node.git", branch: 'master'
                     }
                 }
             }
