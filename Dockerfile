@@ -5,7 +5,7 @@ FROM node:20.11.1 AS build
 WORKDIR /app
 
 # Step 3: Copy package.json and package-lock.json (or yarn.lock) to install dependencies
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./ 
 
 # Step 4: Install dependencies
 RUN npm install
