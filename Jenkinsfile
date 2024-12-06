@@ -78,6 +78,13 @@
 // }
 
 
+
+
+
+
+
+
+
 pipeline {
     agent any
 
@@ -107,12 +114,22 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Stop and remove any container using the old image
+                    sh '''
+                    old_container=$(docker ps -a -q --filter ancestor=${DOCKER_IMAGE})
+                    if [ ! -z "$old_container" ]; then
+                        echo "Stopping and removing old container..."
+                        docker stop $old_container || true
+                        docker rm $old_container || true
+                    fi
+                    '''
+
                     // Remove old Docker images
                     sh '''
                     old_images=$(docker images -q ${DOCKER_IMAGE})
                     if [ ! -z "$old_images" ]; then
                         echo "Removing old Docker images..."
-                        docker rmi -f $old_images
+                        docker rmi -f $old_images || true
                     fi
                     '''
 
