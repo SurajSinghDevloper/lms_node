@@ -8,6 +8,7 @@ const AddmissionExaminationDeatils = new mongoose.Schema({
     examFor: { type: String },
     cutOff: { type: String },
     approvedBy: { type: String },
+    createdBy: { type: String },
     approvedDate: { type: String },
     status: { type: String, enum: Status, default: Status.ACTIVE },
     stamp: { type: Date, default: Date.now }

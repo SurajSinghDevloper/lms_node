@@ -10,7 +10,6 @@ const AdmissionExamination = new mongoose.Schema({
     applicationNo: { type: String },
     gender: { type: String, enum: Gender, },
     marksScored: { type: String },
-    password: { type: String },
     appliedFor: { type: String },
     approvalStatus: { type: String, enum: Status, default: Status.PENDING },
     approvedBy: { type: String },

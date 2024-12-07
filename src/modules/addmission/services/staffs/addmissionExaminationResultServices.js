@@ -1,5 +1,7 @@
 import Results from "../../../../constants/Results.js";
 import AdmissionExamResult from "../../models/AddmissionResultModel.js";
+import Middlewares from "../../../middlewares/middlewares.js";
+import AdmissionExamDetails from "../../models/AddmissionExaminationDeatilsModel.js";
 
 const admissionExaminationResultServices = {
     /**
@@ -9,18 +11,28 @@ const admissionExaminationResultServices = {
      */
     async createAdmissionResult(req) {
         try {
-            const { month, year, dateOfExam, examFor, cutOff, applicationNo, scoredMarks, approvedBy, approvedDate } = req.body;
-
+            const { month, year, applicationNo, scoredMarks, addmissionExamDetails } = req.body;
+            if (!Middlewares.isStdExamDetailsPresent(applicationNo, addmissionExamDetails)) {
+                return {
+                    status: Results.INVALID_ACTION
+                }
+            }
+            const stdEamDetails = AdmissionExamDetails.findById(addmissionExamDetails);
+            const previousDetials = AdmissionExamResult.find({ applicationNo: applicationNo })
+            if (previousDetials) {
+                return {
+                    status: Results.ALLREADY_EXIST
+                }
+            }
             const newResult = new AdmissionExamResult({
                 month,
                 year,
                 dateOfExam,
-                examFor,
-                cutOff,
+                examFor: stdEamDetails.examFor,
+                cutOff: stdEamDetails.cutOff,
                 applicationNo,
                 scoredMarks,
-                approvedBy,
-                approvedDate,
+                addmissionExamDetails
             });
 
             const savedResult = await newResult.save();
@@ -44,7 +56,6 @@ const admissionExaminationResultServices = {
                 AdmissionExamResult.find()
                     .skip(offset)
                     .limit(limit)
-                    .select("-stamp")
             ]);
 
             return { status: Results.SUCCESS, data: results, total };

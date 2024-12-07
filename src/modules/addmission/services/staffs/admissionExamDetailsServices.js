@@ -1,6 +1,9 @@
 
 import Results from "../../../../constants/Results.js";
+import AdmissionExamDetails from "../../models/AddmissionExaminationDeatilsModel.js";
 import AdmissionExam from "../../models/AddmissionExaminationModel.js";
+import User from "../../../users/models/UserModel.js"
+import Middlewares from "../../../middlewares/middlewares.js";
 
 const admissionExamDetailsServices = {
     /**
@@ -10,7 +13,7 @@ const admissionExamDetailsServices = {
      */
     async createExamDetail(req) {
         try {
-            const { month, year, dateOfExam, examFor, cutOff, approvedBy, approvedDate } = req.body;
+            const { month, year, dateOfExam, examFor, cutOff, createdBy } = req.body;
 
             const newDetail = new AdmissionExamDetails({
                 month,
@@ -18,12 +21,15 @@ const admissionExamDetailsServices = {
                 dateOfExam,
                 examFor,
                 cutOff,
-                approvedBy,
-                approvedDate,
+                createdBy
             });
-
-            const savedDetail = await newDetail.save();
-            return { status: Results.SUCCESS, data: savedDetail };
+            if (Middlewares.isUserAuthenticated(createdBy)) {
+                await newDetail.save();
+                return { status: Results.SUCCESS };
+            }
+            return {
+                status: Results.NOT_VALID_USER
+            }
         } catch (error) {
             console.error("Error creating exam detail: ", error);
             throw new Error("Database operation failed");
@@ -61,7 +67,7 @@ const admissionExamDetailsServices = {
      */
     async updateExamDetail(id, updateData) {
         try {
-            const updatedDetail = await AdmissionExam.findByIdAndUpdate(id, updateData, { new: true });
+            const updatedDetail = await AdmissionExamDetails.findByIdAndUpdate(id, updateData, { new: true });
             if (!updatedDetail) throw new Error("Detail not found");
 
             return { status: Results.SUCCESS, data: updatedDetail };

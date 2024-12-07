@@ -1,6 +1,8 @@
 
 import Results from "../../../../constants/Results.js";
+import Status from "../../../../constants/Status.js";
 import AdmissionExam from "../../models/AddmissionExaminationModel.js";
+import Middlewares from "../../../middlewares/middlewares.js";
 
 const admissionExaminationServices = {
     /**
@@ -10,44 +12,23 @@ const admissionExaminationServices = {
      */
     async createExam(req) {
         try {
-            const {
-                name,
-                mobile,
-                email,
-                dateOfExam,
-                applicationNo,
-                gender,
-                marksScored,
-                password,
-                appliedFor,
-                approvalStatus,
-                approvedBy,
-                approvedDate,
-                month,
-                year,
-                addmissionExamDetails
-            } = req.body;
+            const { name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, month, year, addmissionExamDetails } = req.body;
 
+            if (!Middlewares.isStdDetailsPresent(email, addmissionExamDetails)) {
+                return { status: Results.NO_CONTENT_FOUND };
+            }
+
+            const previousDetials = await AdmissionExam.find({ month: month, year: year, applicationNo: applicationNo })
+            if (previousDetials) {
+                return { status: Results.ALLREADY_EXIST }
+            }
             const newExam = new AdmissionExam({
-                name,
-                mobile,
-                email,
-                dateOfExam,
-                applicationNo,
-                gender,
-                marksScored,
-                password,
-                appliedFor,
-                approvalStatus,
-                approvedBy,
-                approvedDate,
-                month,
-                year,
-                addmissionExamDetails
+                name, mobile, email, dateOfExam, applicationNo, gender, appliedFor,
+                approvalStatus: Status.PENDING, month, year, addmissionExamDetails
             });
 
             const savedExam = await newExam.save();
-            return { status: Results.SUCCESS, data: savedExam };
+            return { status: Results.SUCCESS };
         } catch (error) {
             console.error("Error creating admission examination record: ", error);
             throw new Error("Database operation failed");
