@@ -1,3 +1,4 @@
+
 // pipeline {
 //     agent any
 
@@ -27,7 +28,26 @@
 //         stage('Build Docker Image') {
 //             steps {
 //                 script {
-//                     // Build the Docker image for the Node.js app
+//                     // Stop and remove any container using the old image
+//                     sh '''
+//                     old_container=$(docker ps -a -q --filter ancestor=${DOCKER_IMAGE})
+//                     if [ ! -z "$old_container" ]; then
+//                         echo "Stopping and removing old container..."
+//                         docker stop $old_container || true
+//                         docker rm $old_container || true
+//                     fi
+//                     '''
+
+//                     // Remove old Docker images
+//                     sh '''
+//                     old_images=$(docker images -q ${DOCKER_IMAGE})
+//                     if [ ! -z "$old_images" ]; then
+//                         echo "Removing old Docker images..."
+//                         docker rmi -f $old_images || true
+//                     fi
+//                     '''
+
+//                     // Build the new Docker image for the Node.js app
 //                     sh 'docker build -t ${DOCKER_IMAGE} .'
 //                 }
 //             }
@@ -79,18 +99,11 @@
 
 
 
-
-
-
-
-
-
 pipeline {
     agent any
 
     environment {
         DOCKER_IMAGE = 'lms-node-app'
-        DOCKER_REGISTRY = 'docker.io'
         STUDENTS_PERSONAL_DOCS = '/home/administrator/MERN_RESOURCES/STUDENTS/PERSONAL_DOCS/'
         STUDENTS_CERTIFICATES = '/home/administrator/MERN_RESOURCES/STUDENTS/CERTIFICATES/'
         STUDENTS_OTHERS = '/home/administrator/MERN_RESOURCES/STUDENTS/OTHERS/'
@@ -158,16 +171,6 @@ pipeline {
                       -v ${STAFFS_OTHERS}:/app/resources/staffs/others \
                       ${DOCKER_IMAGE}
                     '''
-                }
-            }
-        }
-
-        stage('Push Docker Image to Registry') {
-            steps {
-                script {
-                    // Optionally, push the Docker image to a registry (if using a private registry)
-                    sh 'docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/username/${DOCKER_IMAGE}:latest'
-                    sh 'docker push ${DOCKER_REGISTRY}/username/${DOCKER_IMAGE}:latest'
                 }
             }
         }
