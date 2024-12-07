@@ -1,5 +1,6 @@
-import Results from "../../../constants/Results.js";
-import AdmissionExam from "../../models/AdmissionExamModel.js";
+
+import Results from "../../../../constants/Results.js";
+import AdmissionExam from "../../models/AddmissionExaminationModel.js";
 
 const admissionExaminationServices = {
     /**

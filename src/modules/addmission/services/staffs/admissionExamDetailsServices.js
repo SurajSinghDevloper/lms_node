@@ -1,5 +1,6 @@
-import Results from "../../../constants/Results.js";
-import AdmissionExamDetails from "../../models/AdmissionExamDetailsModel.js";
+
+import Results from "../../../../constants/Results.js";
+import AdmissionExam from "../../models/AddmissionExaminationModel.js";
 
 const admissionExamDetailsServices = {
     /**
@@ -60,7 +61,7 @@ const admissionExamDetailsServices = {
      */
     async updateExamDetail(id, updateData) {
         try {
-            const updatedDetail = await AdmissionExamDetails.findByIdAndUpdate(id, updateData, { new: true });
+            const updatedDetail = await AdmissionExam.findByIdAndUpdate(id, updateData, { new: true });
             if (!updatedDetail) throw new Error("Detail not found");
 
             return { status: Results.SUCCESS, data: updatedDetail };
