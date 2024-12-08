@@ -335,12 +335,13 @@ router.post('/create-addmission/result', authMiddleware, async (req, res) => {
             year,
             applicationNo,
             scoredMarks,
-            addmissionExamDetails
+            addmissionExamDetails,
+            createdBy,
         } = req.body;
 
         // Validate required fields
-        if (!month || !year || !applicationNo || !scoredMarks || !addmissionExamDetails) {
-            return res.status(400).json({ status: "error", message: "All fields are required" });
+        if (!month || !year || !applicationNo || !scoredMarks || !addmissionExamDetails || !createdBy) {
+            return res.status(404).json({ status: "error", message: "All fields are required" });
         }
 
         // Call the service function to create the admission result
@@ -357,8 +358,6 @@ router.post('/create-addmission/result', authMiddleware, async (req, res) => {
         return res.status(500).json({ status: "error", message: "Internal server error" });
     }
 });
-
-// Working on the bleow api
 
 router.get('/addmission-results', authMiddleware, async (req, res) => {
     try {
@@ -378,7 +377,7 @@ router.get('/addmission-results', authMiddleware, async (req, res) => {
     }
 });
 
-router.put('/exam-results/:id', authMiddleware, async (req, res) => {
+router.put('/addmission-results/:id', authMiddleware, async (req, res) => {
     try {
         const { id } = req.params; // Get the ID from the route parameter
         const updateData = req.body; // Get the updated data from the request body

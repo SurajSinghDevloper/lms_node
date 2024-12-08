@@ -13,6 +13,7 @@ const AddmissionExaminationResult = new mongoose.Schema({
     approvedDate: { type: String },
     addmissionExamDetails: { type: String },
     status: { type: String, enum: Status, default: Status.ACTIVE },
+    createdBy: { type: String },
     stamp: { type: Date, default: Date.now }
 });
 
