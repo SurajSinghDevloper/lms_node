@@ -38,6 +38,7 @@ export const login = async (requestData) => {
         mobile: user.mobile,
         dob: user.dob,
         address: user.address,
+        userId: user._id,
         userType: [user.userType],
         roles: await Promise.all(user.roles.map(async (roleId) => await Role.findById(roleId)))
 
