@@ -11,14 +11,14 @@ const admissionExaminationResultServices = {
      */
     async createAdmissionResult(req) {
         try {
-            const { month, year, applicationNo, scoredMarks, addmissionExamDetails } = req.body;
+            const { month, year, applicationNo, scoredMarks, addmissionExamDetails, createdBy } = req.body;
             if (!Middlewares.isStdExamDetailsPresent(applicationNo, addmissionExamDetails)) {
                 return {
                     status: Results.INVALID_ACTION
                 }
             }
             const stdEamDetails = AdmissionExamDetails.findById(addmissionExamDetails);
-            const previousDetials = AdmissionExamResult.find({ applicationNo: applicationNo })
+            const previousDetials = await AdmissionExamResult.findOne({ applicationNo })
             if (previousDetials) {
                 return {
                     status: Results.ALLREADY_EXIST
@@ -27,12 +27,13 @@ const admissionExaminationResultServices = {
             const newResult = new AdmissionExamResult({
                 month,
                 year,
-                dateOfExam,
+                dateOfExam: stdEamDetails.dateOfExam,
                 examFor: stdEamDetails.examFor,
                 cutOff: stdEamDetails.cutOff,
                 applicationNo,
                 scoredMarks,
-                addmissionExamDetails
+                addmissionExamDetails,
+                createdBy
             });
 
             const savedResult = await newResult.save();
