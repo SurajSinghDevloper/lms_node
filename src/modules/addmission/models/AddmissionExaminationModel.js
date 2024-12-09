@@ -16,6 +16,8 @@ const AdmissionExamination = new mongoose.Schema({
     approvedDate: { type: String },
     month: { type: String },
     year: { type: String },
+    createdBy: { type: String },
+    admitCardStatus: { type: String, enum: Status, default: Status.PENDING },
     addmissionExamDetails: { type: String },
     status: { type: String, enum: Status, default: Status.ACTIVE },
     stamp: { type: Date, default: Date.now }

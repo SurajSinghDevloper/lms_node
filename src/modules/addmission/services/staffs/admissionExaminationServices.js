@@ -12,7 +12,7 @@ const admissionExaminationServices = {
      */
     async createExam(req) {
         try {
-            const { name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, month, year, addmissionExamDetails } = req.body;
+            const { name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, month, year, addmissionExamDetails, createdBy } = req.body;
 
             if (!Middlewares.isStdDetailsPresent(email, addmissionExamDetails)) {
                 return { status: Results.NO_CONTENT_FOUND };
@@ -24,7 +24,7 @@ const admissionExaminationServices = {
             }
             const newExam = new AdmissionExam({
                 name, mobile, email, dateOfExam, applicationNo, gender, appliedFor,
-                approvalStatus: Status.PENDING, month, year, addmissionExamDetails
+                approvalStatus: Status.PENDING, month, year, addmissionExamDetails, createdBy
             });
 
             const savedExam = await newExam.save();
@@ -91,7 +91,55 @@ const admissionExaminationServices = {
             console.error("Error deleting admission examination record: ", error);
             throw new Error("Database operation failed");
         }
+    },
+
+    async createAdmitCard(req) {
+        try {
+            const { userId, application_no, type } = req;
+
+            // Find the record by application number
+            const result = await AdmissionExam.findOne({ applicationNo: application_no });
+
+            // Check if the record exists
+            if (!result) {
+                return {
+                    status: Results.NO_CONTENT_FOUND,
+                    message: "Student not found by given details",
+                };
+            }
+
+            // Update the admit card status
+            if (type === 'TRUE') {
+                result.admitCardStatus = Status.APPROVED;
+            } else if (type === 'FALSE') {
+                result.admitCardStatus = Status.REJECTED;
+            } else {
+                return {
+                    status: Results.INVALID_ACTION,
+                    message: "Type is not correct !!!",
+                };
+            }
+            result.createdBy = userId;
+
+            // Save the updated record
+            await result.save();
+
+            // Return a success response
+            return {
+                status: Results.SUCCESS,
+                message: "Admit card status updated successfully",
+            };
+        } catch (error) {
+            // Log the error and return a failure response
+            console.error("Error creating admit card:", error);
+            return {
+                status: Results.ERROR,
+                message: "An error occurred while creating the admit card",
+                error: error.message,
+            };
+        }
     }
+
 };
 
 export default admissionExaminationServices;

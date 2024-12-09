@@ -252,13 +252,13 @@ router.delete('/exam-details/:id', authMiddleware, async (req, res) => {
 // ############   addmission examination sedulation ####################
 
 router.post('/shedule-exams', authMiddleware, async (req, res) => {
-    const { name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, addmissionExamDetails, month, year } = req.body;
+    const { name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, addmissionExamDetails, month, year, createdBy } = req.body;
 
     // Validation for required fields
-    if (!name || !mobile || !email || !dateOfExam || !applicationNo || !gender || !appliedFor || !addmissionExamDetails || !month || !year) {
+    if (!name || !mobile || !email || !dateOfExam || !applicationNo || !gender || !appliedFor || !addmissionExamDetails || !month || !createdBy || !year) {
         return res.status(400).json({
             status: "error",
-            message: "All fields (name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, addmissionExamDetails, month, year) are required."
+            message: "All fields (name, mobile, email, dateOfExam, applicationNo, gender, appliedFor, addmissionExamDetails, month, createdBy, year) are required."
         });
     }
 
@@ -273,7 +273,7 @@ router.post('/shedule-exams', authMiddleware, async (req, res) => {
         return res.status(201).json(result);
     } catch (error) {
         console.error("Error: ", error);
-        return res.status(500).json({ status: 'error', message: error.message }); // Send error response
+        return res.status(500).json({ status: 'error', message: error.message });
     }
 });
 
@@ -325,6 +325,29 @@ router.delete('/sheduled-exams/:id', authMiddleware, async (req, res) => {
         return res.status(500).json({ status: 'error', message: error.message }); // Send error response
     }
 });
+
+// ############   addmission Admit card ####################
+
+router.post('/create/admit-card', authMiddleware, async (req, res) => {
+    const { userId, application_no, type } = req.query
+
+    if (!userId || !application_no || !type) {
+        return res.status(404).json({ status: "error", message: "All fields are required" });
+    }
+    try {
+        const result = await admissionExaminationServices.createAdmitCard(req);
+
+        if (result.status === Results.NO_CONTENT_FOUND) {
+            return res.status(204).json({ status: result.status, message: result.message })
+        }
+        if (result.status === Results.INVALID_ACTION) {
+            return res.status(400).json({ status: result.status, message: result.message })
+        }
+        return res.status(200).json({ message: "Updated Sucessfully" })
+    } catch (error) {
+        return res.status(500).json({ error: error })
+    }
+})
 
 // ############   addmission examination result ####################
 
